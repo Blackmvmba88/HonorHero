@@ -1,0 +1,33 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+/tmp/
+*.tmp
+
+# Audio recordings (if added)
+recordings/
+*.wav
+*.mp3
+
+# Test outputs
+test_output/
