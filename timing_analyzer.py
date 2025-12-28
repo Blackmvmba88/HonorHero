@@ -109,6 +109,7 @@ class TimingAnalyzer:
             cv = np.std(intervals) / mean_interval
             consistency = max(0, 1 - cv)
         else:
+            cv = 0  # Default to 0 if mean is 0
             consistency = 0.5
         
         # Score based on consistency
