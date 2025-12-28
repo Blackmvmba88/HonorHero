@@ -4,9 +4,17 @@ Handles real-time audio input from microphone or instrument
 """
 
 import numpy as np
-import sounddevice as sd
 from typing import Callable, Optional
 import config
+
+# Try to import sounddevice, but allow graceful degradation
+try:
+    import sounddevice as sd
+    AUDIO_AVAILABLE = True
+except (OSError, ImportError) as e:
+    AUDIO_AVAILABLE = False
+    print(f"Warning: Audio input not available ({e})")
+    print("Audio capture will not work, but other modules can still be used.")
 
 
 class AudioCapture:
@@ -29,6 +37,9 @@ class AudioCapture:
         Args:
             callback: Function to call with audio data (audio_chunk, sample_rate)
         """
+        if not AUDIO_AVAILABLE:
+            raise RuntimeError("Audio input is not available. sounddevice/PortAudio not properly installed.")
+        
         def audio_callback(indata, frames, time_info, status):
             if status:
                 print(f"Audio status: {status}")
@@ -55,4 +66,6 @@ class AudioCapture:
         
     def get_devices(self):
         """Get available audio input devices"""
+        if not AUDIO_AVAILABLE:
+            return []
         return sd.query_devices()
