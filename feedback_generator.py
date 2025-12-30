@@ -117,13 +117,13 @@ class FeedbackGenerator:
         
         base = random.choice(messages)
         
-        # Add comparison if available
+        # Add comparison if available (showing actual point difference)
         if previous_score is not None:
             diff = score - previous_score
             if diff > 5:
-                base += f" (↑ mejoró {diff:.0f}%)"
+                base += f" (↑ +{diff:.0f} puntos)"
             elif diff < -5:
-                base += f" (↓ bajó {diff:.0f}%)"
+                base += f" (↓ {diff:.0f} puntos)"
         
         return base
     

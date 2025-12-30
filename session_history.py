@@ -50,7 +50,8 @@ class SessionHistory:
             with open(self.storage_path, 'w', encoding='utf-8') as f:
                 json.dump(self.sessions, f, indent=2, ensure_ascii=False)
         except IOError as e:
-            print(f"Warning: Could not save session history: {e}")
+            print(f"Warning: Could not save session history to {self.storage_path}: {e}")
+            print("Your session data for this run will not be persisted.")
     
     def add_session(self, session_data: Dict):
         """
@@ -137,8 +138,18 @@ class SessionHistory:
             return 0
         
         # Check if practiced today or yesterday
+        from datetime import datetime
         today = datetime.now().date()
-        last_practice = datetime.fromisoformat(dates[0]).date()
+        
+        try:
+            # Try Python 3.7+ fromisoformat
+            last_practice = datetime.fromisoformat(dates[0]).date()
+        except (ValueError, AttributeError):
+            # Fallback for older Python or invalid format
+            try:
+                last_practice = datetime.strptime(dates[0], '%Y-%m-%d').date()
+            except ValueError:
+                return 0
         
         days_diff = (today - last_practice).days
         if days_diff > 1:
@@ -147,8 +158,15 @@ class SessionHistory:
         # Count consecutive days
         streak = 1
         for i in range(len(dates) - 1):
-            current = datetime.fromisoformat(dates[i]).date()
-            next_date = datetime.fromisoformat(dates[i + 1]).date()
+            try:
+                current = datetime.fromisoformat(dates[i]).date()
+                next_date = datetime.fromisoformat(dates[i + 1]).date()
+            except (ValueError, AttributeError):
+                try:
+                    current = datetime.strptime(dates[i], '%Y-%m-%d').date()
+                    next_date = datetime.strptime(dates[i + 1], '%Y-%m-%d').date()
+                except ValueError:
+                    break
             
             if (current - next_date).days == 1:
                 streak += 1
