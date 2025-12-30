@@ -12,6 +12,8 @@ from timing_analyzer import TimingAnalyzer
 from dynamics_analyzer import DynamicsAnalyzer
 from consistency_analyzer import ConsistencyAnalyzer
 from scoring_system import ScoringSystem
+from session_history import SessionHistory
+from feedback_generator import FeedbackGenerator
 import config
 
 
@@ -31,11 +33,14 @@ class HonorHero:
         self.dynamics_analyzer = DynamicsAnalyzer()
         self.consistency_analyzer = ConsistencyAnalyzer()
         self.scoring_system = ScoringSystem()
+        self.session_history = SessionHistory()
+        self.feedback_generator = FeedbackGenerator()
         
         # State
         self.is_running = False
         self.start_time = None
         self.current_metrics = {}
+        self.previous_metrics = {}
         self.update_callback = None
         
     def start_performance(self, update_callback=None):
@@ -126,13 +131,23 @@ class HonorHero:
         
         honor_result = self.scoring_system.calculate_honor_score(metrics)
         
+        # Generate human-friendly feedback
+        human_feedback = self.feedback_generator.generate_realtime_feedback(
+            honor_result, 
+            self.previous_metrics
+        )
+        
         # Store current metrics
         self.current_metrics = {
             'honor_score': honor_result['honor_score'],
             'tier': honor_result['tier'],
             'message': honor_result['message'],
+            'human_feedback': human_feedback,
             'components': metrics
         }
+        
+        # Save previous for comparison
+        self.previous_metrics = self.current_metrics.copy()
         
         # Call update callback if provided
         if self.update_callback:
@@ -140,6 +155,11 @@ class HonorHero:
     
     def _calculate_final_scores(self) -> Dict:
         """Calculate final performance summary"""
+        # Calculate session duration
+        duration = 0
+        if self.start_time:
+            duration = time.time() - self.start_time
+        
         # Get final component scores
         pitch_score = self.pitch_analyzer.get_average_score()
         timing_analysis = self.timing_analyzer.analyze_timing()
@@ -159,12 +179,39 @@ class HonorHero:
         honor_result = self.scoring_system.calculate_honor_score(metrics)
         progress_summary = self.scoring_system.get_progress_summary()
         
+        # Compare with session history
+        comparison = self.session_history.compare_with_previous(
+            honor_result['honor_score'],
+            metrics
+        )
+        
+        # Generate human-friendly summary
+        human_summary = self.feedback_generator.generate_session_summary(
+            {
+                'final_honor_score': honor_result['honor_score'],
+                'tier': honor_result['tier'],
+                'components': metrics
+            },
+            comparison
+        )
+        
+        # Save to session history
+        self.session_history.add_session({
+            'final_honor_score': honor_result['honor_score'],
+            'tier': honor_result['tier'],
+            'components': metrics,
+            'duration': duration
+        })
+        
         return {
             'final_honor_score': honor_result['honor_score'],
             'tier': honor_result['tier'],
             'message': honor_result['message'],
+            'human_summary': human_summary,
             'components': metrics,
-            'progress': progress_summary
+            'progress': progress_summary,
+            'comparison': comparison,
+            'duration': duration
         }
     
     def get_current_status(self) -> Dict:
@@ -179,3 +226,12 @@ class HonorHero:
         self.consistency_analyzer.reset()
         self.scoring_system.reset()
         self.current_metrics = {}
+        self.previous_metrics = {}
+    
+    def get_session_statistics(self) -> Dict:
+        """Get statistics from session history"""
+        return self.session_history.get_statistics()
+    
+    def get_recent_sessions(self, count: int = 10) -> list:
+        """Get recent practice sessions"""
+        return self.session_history.get_recent_sessions(count)

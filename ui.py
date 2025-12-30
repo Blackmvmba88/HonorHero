@@ -82,9 +82,14 @@ class HonorHeroUI:
         print("└" + "─" * 68 + "┘")
         print()
         
-        # Message
-        message = metrics.get('message', '')
-        print(f"💬 {message}")
+        # Human-friendly feedback
+        human_feedback = metrics.get('human_feedback', '')
+        if human_feedback:
+            print(f"💬 {human_feedback}")
+        else:
+            # Fallback to default message
+            message = metrics.get('message', '')
+            print(f"💬 {message}")
         print()
         print("Presiona Ctrl+C para detener la evaluación...")
     
@@ -100,8 +105,11 @@ class HonorHeroUI:
         honor_score = results.get('final_honor_score', 0)
         tier = results.get('tier', 'N/A')
         message = results.get('message', '')
+        human_summary = results.get('human_summary', '')
         components = results.get('components', {})
         progress = results.get('progress', {})
+        comparison = results.get('comparison', {})
+        duration = results.get('duration', 0)
         
         color = self.get_color(honor_score)
         reset = '\033[0m'
@@ -114,8 +122,17 @@ class HonorHeroUI:
         print(f"{color}╚{'═' * 68}╝{reset}")
         print()
         
-        print(f"💬 {message}")
+        # Human-friendly summary
+        if human_summary:
+            print(f"💬 {human_summary}")
+        else:
+            print(f"💬 {message}")
         print()
+        
+        # Comparison with history
+        if comparison and comparison.get('has_history'):
+            print(f"📊 {comparison.get('message', '')}")
+            print()
         
         # Component breakdown
         print("┌─ DESGLOSE DE COMPONENTES " + "─" * 41 + "┐")
@@ -127,8 +144,11 @@ class HonorHeroUI:
         print("└" + "─" * 68 + "┘")
         print()
         
-        # Progress info
-        print("┌─ PROGRESO " + "─" * 56 + "┐")
+        # Session info
+        minutes = int(duration // 60)
+        seconds = int(duration % 60)
+        print("┌─ INFORMACIÓN DE SESIÓN " + "─" * 43 + "┐")
+        print(f"│ Duración:             {minutes:02d}:{seconds:02d} min{' ' * 40} │")
         print(f"│ Evaluaciones totales: {progress.get('total_evaluations', 0):<43} │")
         print(f"│ Puntuación promedio:  {progress.get('average_score', 0):<43.1f} │")
         print(f"│ Tendencia:            {progress.get('trend', 'N/A'):<43} │")

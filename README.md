@@ -4,9 +4,25 @@
 
 HonorHero is a human-centered music performance evaluation system inspired by Guitar Hero. It captures live audio (voice or instrument) and analyzes your performance in real-time, providing constructive feedback focused on self-improvement rather than competition.
 
+## Who is HonorHero for? 🎯
+
+HonorHero was created for anyone who wants to grow as a musician without the pressure of competition or judgment:
+
+- **🎸 The beginner musician** who's tired of feeling inadequate when comparing themselves to others
+- **🎤 The shy vocalist** who needs private, encouraging feedback to build confidence
+- **🥁 The instrumentalist who hates metronomes** but still wants to develop better timing
+- **👨‍🏫 The music teacher** seeking a compassionate tool that encourages students instead of grading them
+- **🎹 The self-taught learner** who wants to track progress without the stress of formal evaluation
+- **🎵 The experienced musician** exploring new styles or recovering from injury
+- **💆 Anyone using music for therapy or mindfulness** who values process over perfection
+
+If you believe that **mistakes are part of learning**, not failures to be punished, HonorHero is for you.
+
 ## Philosophy
 
 **The performance never stops.** Mistakes are measured, not punished. HonorHero embraces the learning journey and celebrates progress over perfection.
+
+Read our full philosophy in the [MANIFESTO](MANIFESTO.md).
 
 ## Features
 
@@ -23,6 +39,8 @@ HonorHero is a human-centered music performance evaluation system inspired by Gu
   - **Firme** (60-79): Firm, solid performance
   - **Inestable** (40-59): Unstable, inconsistent
   - **Fragmentado** (0-39): Fragmented performance
+- 🗣️ **Human-Friendly Feedback**: Natural language coaching, not just numbers
+- 💾 **Session History**: Track your progress over days and weeks
 - 🎨 **Expressive UI**: Simple console interface focused on encouragement
 - 🔧 **Modular Architecture**: Clean separation of concerns for easy extension
 
@@ -181,6 +199,16 @@ python examples.py
 
 This provides interactive examples of using HonorHero both with callbacks and programmatically.
 
+### Juan's Story: A Week-Long Journey
+
+Want to see HonorHero in action? Read about Juan's transformation:
+
+```bash
+python juan_story.py
+```
+
+Juan, a beginner guitarist, practiced just 5 minutes a day for a week. His Honor Score went from 42 to 82. This isn't about talent—it's about consistent, mindful practice. The story shows how HonorHero tracks progress, provides encouragement, and celebrates growth.
+
 ## Requirements
 
 - numpy: Numerical operations
@@ -198,9 +226,24 @@ Contributions are welcome! This project embraces:
 - Multi-language support
 - Recording and playback features
 
+See our [ROADMAP](ROADMAP.md) for planned features and how you can help.
+
+**Please review our [ethical guidelines](ETHICS.md) before contributing.** All contributions must align with HonorHero's philosophy of encouragement over competition.
+
 ## License
 
-This project is open source and available for educational and personal use.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+**Ethical Use**: While this is open source software, we encourage all users to review our [ETHICS.md](ETHICS.md) guidelines. HonorHero is designed for learning and self-improvement, not for competitive ranking or punitive evaluation.
+
+## Roadmap 🚢
+
+We're actively developing HonorHero! Check out our [ROADMAP](ROADMAP.md) to see:
+- **v0.2**: Session persistence and history tracking
+- **v0.3**: Visualization and insights
+- **v1.0**: GUI and standalone application
+
+Want to contribute? Pick a feature from the roadmap and join us!
 
 ## Credits
 
