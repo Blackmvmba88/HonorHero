@@ -72,7 +72,17 @@ pip install -r requirements.txt
 python ui.py
 ```
 
-This launches the interactive console UI that displays real-time performance metrics.
+This launches the interactive console UI that displays real-time performance metrics and saves your session history automatically.
+
+### View Your Progress
+
+After completing sessions, view your statistics:
+
+```bash
+python view_stats.py
+```
+
+This shows your practice history, average scores, improvement trends, and practice streaks.
 
 ### Command-line Options
 
