@@ -96,7 +96,7 @@ def generate_juan_story():
             "timing": 52,
             "rhythm": 55,
             "dynamics": 65,
-            "dynamics": 58
+            "consistency": 58
         },
         "feedback": "Bajaste un poco, pero es parte del proceso. Tu dinámica mejoró, pero timing bajó. ¿Estás yendo muy rápido?",
         "juan_thoughts": "Bajé a 58. Me frustré... pero HonorHero dice que es parte del proceso. Y mi dinámica mejoró, eso no lo había notado."
