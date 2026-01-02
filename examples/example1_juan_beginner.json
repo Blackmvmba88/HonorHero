@@ -1,0 +1,51 @@
+{
+  "description": "Example 1: Juan's Beginner Guitar Session",
+  "scenario": "Juan, a beginner guitarist, practices for the first time with HonorHero",
+  "session": {
+    "timestamp": "2024-01-15T18:30:00",
+    "date": "2024-01-15",
+    "time": "18:30:00",
+    "honor_score": 42,
+    "tier": "Inestable",
+    "duration": 300,
+    "components": {
+      "pitch": 55,
+      "timing": 38,
+      "rhythm": 45,
+      "dynamics": 52,
+      "consistency": 35
+    },
+    "feedback": {
+      "summary": "Sesión desafiante. Continúa practicando para integrar todo. Te mantienes estable.",
+      "realtime_messages": [
+        "Hay inconsistencias. Tu dinámica está sólida, pero consistencia necesita atención.",
+        "Control irregular. Trabaja la estabilidad.",
+        "Un poco disperso. Tu pitch va bien, pero timing necesita atención."
+      ],
+      "component_details": {
+        "pitch": "Pitch accuracy is within a healthy learning range",
+        "timing": "Timing is improving, but rhythm varies",
+        "rhythm": "Rhythm patterns show potential with practice",
+        "dynamics": "Good expressive variation detected",
+        "consistency": "Keep playing — consistency grows with time"
+      }
+    },
+    "encouragement": "Juan doesn't 'fail'. He receives a snapshot of where he is right now.",
+    "next_steps": "Focus on timing and consistency in your next practice session"
+  },
+  "console_output": [
+    "═══════════════════════════════════════════════════════════",
+    "               🎵 HonorHero Performance Report",
+    "═══════════════════════════════════════════════════════════",
+    "",
+    "        Honor Score: 42",
+    "        Tier: Inestable",
+    "",
+    "Feedback:",
+    "- Timing is improving, but rhythm varies.",
+    "- Pitch accuracy is within a healthy learning range.",
+    "- Keep playing — consistency grows with time.",
+    "",
+    "═══════════════════════════════════════════════════════════"
+  ]
+}

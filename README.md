@@ -201,13 +201,32 @@ Each component is scored 0-100 based on tolerant thresholds that encourage learn
 
 ## Examples
 
-Run the example scripts:
+HonorHero includes comprehensive examples demonstrating real-world scenarios and use cases. See [EXAMPLES.md](EXAMPLES.md) for detailed documentation with console output and visual storytelling.
+
+### Interactive Example Viewer
 
 ```bash
-python examples.py
+python display_examples.py
 ```
 
-This provides interactive examples of using HonorHero both with callbacks and programmatically.
+This launches an interactive menu to explore:
+- **Example 1:** Juan's beginner guitar session (Score: 42, Inestable)
+- **Example 2:** Daily practice tracking - week-long journey from 42 to 82
+- **Example 3:** Shy vocalist with gentle, supportive feedback
+- **Example 4:** Programmatic use for developers and custom applications
+- **Example 5:** What HonorHero is NOT - philosophy and principles
+
+### Example Data Files
+
+All examples include simulated session data in JSON format in the `examples/` directory:
+
+```bash
+# View example data
+cat examples/example1_juan_beginner.json | python -m json.tool
+
+# Simulate Juan's weekly progress
+ls examples/example2_daily_tracking_*.json
+```
 
 ### Juan's Story: A Week-Long Journey
 
@@ -218,6 +237,14 @@ python juan_story.py
 ```
 
 Juan, a beginner guitarist, practiced just 5 minutes a day for a week. His Honor Score went from 42 to 82. This isn't about talent—it's about consistent, mindful practice. The story shows how HonorHero tracks progress, provides encouragement, and celebrates growth.
+
+### Programmatic Usage Examples
+
+```bash
+python examples.py
+```
+
+This provides interactive examples of using HonorHero both with callbacks and programmatically, including integration scenarios for music therapy, educational platforms, and research applications.
 
 ## Requirements
 
