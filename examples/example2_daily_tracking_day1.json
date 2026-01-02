@@ -1,0 +1,21 @@
+{
+  "description": "Example 2: Daily Practice Tracking - Day 1",
+  "scenario": "Juan practices 5 minutes on Day 1 of his week-long journey",
+  "session": {
+    "timestamp": "2024-01-15T18:30:00",
+    "date": "2024-01-15",
+    "time": "18:30:00",
+    "day_number": 1,
+    "honor_score": 42,
+    "tier": "Inestable",
+    "duration": 300,
+    "components": {
+      "pitch": 55,
+      "timing": 38,
+      "rhythm": 45,
+      "dynamics": 52,
+      "consistency": 35
+    },
+    "notes": "First day of practice, establishing baseline"
+  }
+}

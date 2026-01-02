@@ -1,0 +1,71 @@
+{
+  "description": "Example 4: Programmatic Usage for Developers",
+  "scenario": "HonorHero embedded into custom applications with callback-based real-time metrics",
+  "use_cases": [
+    "Custom UI development",
+    "Music therapy software integration",
+    "Educational platforms",
+    "Research on performance consistency"
+  ],
+  "code_example": {
+    "language": "python",
+    "snippet": [
+      "from honorhero import HonorHero",
+      "",
+      "# Create engine",
+      "engine = HonorHero()",
+      "",
+      "# Define callback for real-time updates",
+      "def on_update(metrics):",
+      "    print(f\"Score: {metrics['honor_score']:.1f}\")",
+      "    print(f\"Tier: {metrics['tier']}\")",
+      "    # Store metrics in database",
+      "    db.save_metrics(metrics)",
+      "    # Update custom UI",
+      "    ui.update_display(metrics)",
+      "",
+      "# Start performance evaluation",
+      "engine.start_performance(on_update)",
+      "",
+      "# ... perform music ...",
+      "",
+      "# Stop and get final results",
+      "results = engine.stop_performance()",
+      "print(f\"Final Score: {results['final_honor_score']:.1f}\")"
+    ]
+  },
+  "sample_callback_data": {
+    "timestamp": 1.5,
+    "metrics": {
+      "honor_score": 67.5,
+      "tier": "Firme",
+      "components": {
+        "pitch": 72,
+        "timing": 65,
+        "rhythm": 68,
+        "dynamics": 70,
+        "consistency": 63
+      },
+      "message": "Buen control general",
+      "human_feedback": "Performance estable. Tu dinámica está sólida."
+    }
+  },
+  "integration_scenarios": {
+    "music_therapy": {
+      "description": "Track patient progress over weeks",
+      "metrics_stored": ["honor_score", "dynamics", "consistency"],
+      "reporting": "Weekly progress reports for therapist review"
+    },
+    "educational_platform": {
+      "description": "Student practice tracking without grades",
+      "features": ["Progress visualization", "Encouraging feedback", "Practice streaks"],
+      "philosophy": "Growth mindset, not competition"
+    },
+    "research": {
+      "description": "Study performance consistency patterns",
+      "data_collected": ["Component scores over time", "Session durations", "Improvement rates"],
+      "applications": "Music pedagogy research, skill acquisition studies"
+    }
+  },
+  "note": "Real-time metrics can be accessed through callbacks and stored for later analysis, making HonorHero suitable for musicians, educators, therapists, and developers."
+}

@@ -1,0 +1,60 @@
+{
+  "description": "Example 5: What HonorHero Is NOT",
+  "philosophy": "HonorHero exists to reflect, not to dominate",
+  "what_honorhero_does_not_do": {
+    "no_ranking": {
+      "description": "Does not rank musicians against each other",
+      "explanation": "HonorHero is about personal growth, not competition. There are no leaderboards, no comparisons with other musicians.",
+      "alternative": "Compare your current performance with your own past sessions"
+    },
+    "no_perfect_timing": {
+      "description": "Does not enforce rigid 'perfect' timing",
+      "explanation": "Music is human. Slight variations are natural and often expressive. HonorHero uses tolerant thresholds that embrace musicality.",
+      "alternative": "Evaluates timing consistency, not robotic precision"
+    },
+    "no_punishment": {
+      "description": "Does not punish mistakes",
+      "explanation": "Performance never stops for errors. Mistakes are measured as part of your journey, not penalized.",
+      "alternative": "Constructive feedback that acknowledges challenges and celebrates progress"
+    },
+    "no_teacher_replacement": {
+      "description": "Does not replace teachers or human judgment",
+      "explanation": "HonorHero is a practice tool, not a substitute for musical instruction or artistic interpretation.",
+      "alternative": "Complements traditional teaching with objective, encouraging feedback"
+    },
+    "no_absolute_judgments": {
+      "description": "Does not make absolute judgments about talent",
+      "explanation": "Everyone's musical journey is unique. HonorHero shows you where you are today, not where you should be.",
+      "alternative": "Provides context-aware feedback focused on your personal growth"
+    }
+  },
+  "honorhero_exists_to": [
+    "Reflect your current state without judgment",
+    "Track your personal progress over time",
+    "Provide encouraging, constructive feedback",
+    "Celebrate small wins and acknowledge challenges",
+    "Support self-directed learning and practice",
+    "Build confidence through visible improvement"
+  ],
+  "comparison_table": {
+    "traditional_grading": {
+      "focus": "Absolute performance against a standard",
+      "feedback": "Pass/Fail, Letter grades",
+      "competition": "Ranked against peers",
+      "mistakes": "Penalized, subtract points",
+      "goal": "Meet external standards"
+    },
+    "honorhero": {
+      "focus": "Personal growth and consistency",
+      "feedback": "Qualitative tiers with encouragement",
+      "competition": "Compare with your own history",
+      "mistakes": "Measured as learning opportunities",
+      "goal": "Improve through mindful practice"
+    }
+  },
+  "testimonials": {
+    "beginner": "I'm not competing with anyone. I'm just watching myself get better each day.",
+    "teacher": "Finally, a tool that encourages students instead of stressing them out.",
+    "shy_vocalist": "I can practice privately and still get helpful feedback without judgment."
+  }
+}

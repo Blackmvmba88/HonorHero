@@ -1,0 +1,50 @@
+{
+  "description": "Example 3: Shy Vocalist Nighttime Practice",
+  "scenario": "A shy vocalist practices alone at night using a microphone. HonorHero adapts with tolerant pitch thresholds and gentle dynamics analysis",
+  "session": {
+    "timestamp": "2024-01-20T22:15:00",
+    "date": "2024-01-20",
+    "time": "22:15:00",
+    "honor_score": 71,
+    "tier": "Firme",
+    "duration": 480,
+    "components": {
+      "pitch": 74,
+      "timing": 68,
+      "rhythm": 70,
+      "dynamics": 78,
+      "consistency": 72
+    },
+    "feedback": {
+      "summary": "Buena práctica. Tu performance es sólida y consistente.",
+      "highlights": [
+        "Expressive dynamics detected",
+        "Pitch confidence increased during sustained notes",
+        "Excellent emotional continuity"
+      ]
+    },
+    "system_behavior": {
+      "pitch_tolerance": "Tolerant - no harsh penalties for slight variations",
+      "dynamics_analysis": "Gentle - celebrates expressive variation",
+      "stability_penalties": "None - no punishment for instability",
+      "coaching_style": "Supportive coach, not a judge"
+    }
+  },
+  "console_output": [
+    "═══════════════════════════════════════════════════════════",
+    "               🎵 HonorHero Performance Report",
+    "═══════════════════════════════════════════════════════════",
+    "",
+    "        Honor Score: 71",
+    "        Tier: Firme",
+    "",
+    "Feedback:",
+    "- Expressive dynamics detected.",
+    "- Pitch confidence increased during sustained notes.",
+    "- Excellent emotional continuity.",
+    "",
+    "The system acts like a supportive coach, not a judge.",
+    "",
+    "═══════════════════════════════════════════════════════════"
+  ]
+}

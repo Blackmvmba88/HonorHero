@@ -1,0 +1,23 @@
+{
+  "description": "Example 2: Daily Practice Tracking - Day 7",
+  "scenario": "Juan practices 5 minutes on Day 7, reaching Íntegro tier",
+  "session": {
+    "timestamp": "2024-01-21T18:30:00",
+    "date": "2024-01-21",
+    "time": "18:30:00",
+    "day_number": 7,
+    "honor_score": 82,
+    "tier": "Íntegro",
+    "duration": 300,
+    "components": {
+      "pitch": 85,
+      "timing": 78,
+      "rhythm": 82,
+      "dynamics": 86,
+      "consistency": 81
+    },
+    "notes": "Excellent progress! All components improved significantly",
+    "achievement": "first_integro"
+  },
+  "insight": "Progress is visible, measurable, and motivating — without pressure."
+}

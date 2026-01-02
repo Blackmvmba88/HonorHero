@@ -1,0 +1,21 @@
+{
+  "description": "Example 2: Daily Practice Tracking - Day 4",
+  "scenario": "Juan practices 5 minutes on Day 4, showing improvement",
+  "session": {
+    "timestamp": "2024-01-18T18:30:00",
+    "date": "2024-01-18",
+    "time": "18:30:00",
+    "day_number": 4,
+    "honor_score": 63,
+    "tier": "Firme",
+    "duration": 300,
+    "components": {
+      "pitch": 68,
+      "timing": 59,
+      "rhythm": 65,
+      "dynamics": 67,
+      "consistency": 58
+    },
+    "notes": "Noticeable improvement in all areas, more confident playing"
+  }
+}
