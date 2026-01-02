@@ -93,6 +93,6 @@ if __name__ == '__main__':
     if not Path('examples').exists():
         print("Error: 'examples' directory not found.")
         print("Please run this script from the HonorHero root directory.")
-        exit(1)
+        sys.exit(1)
     
     show_all_examples()
