@@ -7,12 +7,37 @@ import time
 import sys
 from honorhero import HonorHero
 from typing import Dict
+import config
 
 
 class HonorHeroUI:
     """Simple expressive console UI for HonorHero"""
     
-    def __init__(self):
+    def __init__(self, profile: str = None, mode: str = None):
+        self.profile_name = profile or config.DEFAULT_PROFILE
+        self.mode_name = mode or config.DEFAULT_MODE
+        
+        # Load profile settings
+        if self.profile_name not in config.PROFILES:
+            print(f"Warning: Profile '{self.profile_name}' not found, using default.")
+            self.profile_name = config.DEFAULT_PROFILE
+        
+        self.profile = config.PROFILES[self.profile_name]
+        
+        # Load mode settings
+        if self.mode_name not in config.SESSION_MODES:
+            print(f"Warning: Mode '{self.mode_name}' not found, using default.")
+            self.mode_name = config.DEFAULT_MODE
+        
+        self.mode = config.SESSION_MODES[self.mode_name]
+        
+        # Apply profile settings to config
+        config.PITCH_TOLERANCE = self.profile['PITCH_TOLERANCE']
+        config.TIMING_TOLERANCE = self.profile['TIMING_TOLERANCE']
+        config.RHYTHM_TOLERANCE = self.profile['RHYTHM_TOLERANCE']
+        config.DYNAMICS_TOLERANCE = self.profile['DYNAMICS_TOLERANCE']
+        config.CONSISTENCY_THRESHOLD = self.profile['CONSISTENCY_THRESHOLD']
+        
         self.engine = HonorHero()
         self.last_update_time = 0
         
@@ -57,6 +82,7 @@ class HonorHeroUI:
         print("🎵  HONORHERO  🎵".center(70))
         print("Interpretación consciente, no perfección vacía".center(70))
         print("=" * 70)
+        print(f"Perfil: {self.profile['name']} | Modo: {self.mode['name']}".center(70))
         print()
         
         # Honor Score (large display)
@@ -163,8 +189,12 @@ class HonorHeroUI:
         Run HonorHero with UI
         
         Args:
-            duration: Performance duration in seconds (None = until interrupted)
+            duration: Performance duration in seconds (None = use mode default or until interrupted)
         """
+        # Use mode duration if not explicitly provided
+        if duration is None:
+            duration = self.mode['duration']
+        
         try:
             # Start engine
             self.engine.start_performance(self.display_update)
@@ -197,7 +227,21 @@ def main():
         '--duration',
         type=int,
         default=None,
-        help='Performance duration in seconds (default: until interrupted)'
+        help='Performance duration in seconds (overrides mode default)'
+    )
+    parser.add_argument(
+        '--profile',
+        type=str,
+        choices=['beginner', 'intermediate', 'advanced', 'therapy'],
+        default=None,
+        help='User profile: beginner (más tolerante) | intermediate | advanced (más estricto) | therapy (terapéutico)'
+    )
+    parser.add_argument(
+        '--mode',
+        type=str,
+        choices=['short', 'focus', 'free'],
+        default=None,
+        help='Session mode: short (3 min) | focus (10 min) | free (sin límite)'
     )
     
     args = parser.parse_args()
@@ -223,13 +267,30 @@ def main():
     print()
     print("Enfoque en auto-mejora, no en competencia.")
     print()
+    
+    # Show profile and mode selection
+    profile = args.profile or config.DEFAULT_PROFILE
+    mode = args.mode or config.DEFAULT_MODE
+    
+    profile_info = config.PROFILES[profile]
+    mode_info = config.SESSION_MODES[mode]
+    
+    print(f"📋 Perfil seleccionado: {profile_info['name']}")
+    print(f"   {profile_info['description']}")
+    print()
+    print(f"⏱️  Modo de sesión: {mode_info['name']}")
+    print(f"   {mode_info['description']}")
+    if mode_info['duration']:
+        minutes = mode_info['duration'] // 60
+        print(f"   Duración: {minutes} minutos")
+    print()
     print("-" * 70)
     print()
     
     input("Presiona Enter para comenzar...")
     print()
     
-    ui = HonorHeroUI()
+    ui = HonorHeroUI(profile=profile, mode=mode)
     ui.run(duration=args.duration)
 
 
