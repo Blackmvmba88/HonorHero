@@ -10,9 +10,13 @@ from pathlib import Path
 
 def format_duration(seconds):
     """Format duration in a human-readable way"""
-    minutes = int(seconds // 60)
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
     secs = int(seconds % 60)
-    if minutes > 0:
+    
+    if hours > 0:
+        return f"{hours}h {minutes}m"
+    elif minutes > 0:
         return f"{minutes}m {secs}s"
     return f"{secs}s"
 
@@ -43,11 +47,22 @@ def print_statistics():
     print(f"│ Total de sesiones:    {stats['total_sessions']:<47} │")
     print(f"│ Tiempo total:         {format_duration(stats['total_practice_time']):<47} │")
     print(f"│ Puntuación promedio:  {stats['average_score']:<47.1f} │")
-    print(f"│ Mejor puntuación:     {stats['highest_score']:<47.1f} │")
+    print(f"│ 🏆 Mejor puntuación:  {stats['highest_score']:<47.1f} │")
     print(f"│ Tier más común:       {stats['most_common_tier']:<47} │")
-    print(f"│ Racha actual:         {stats['current_streak']} días{' ' * 40} │")
+    
+    # Streak display with emoji
+    streak = stats['current_streak']
+    if streak > 0:
+        streak_emoji = "🔥" if streak >= 7 else "⭐"
+        print(f"│ {streak_emoji} Racha actual:      {streak} día{'s' if streak != 1 else ''}{' ' * (44 - len(str(streak)))} │")
+    else:
+        print(f"│ Racha actual:         {streak} días (¡empieza hoy!){' ' * 23} │")
+    
     print("└" + "─" * 68 + "┘")
     print()
+    
+    # Weekly view - last 7 days
+    print_weekly_view(history)
     
     # Recent sessions
     recent = history.get_recent_sessions(5)
@@ -109,6 +124,72 @@ def print_statistics():
     storage_path = history.storage_path
     print(f"Datos guardados en: {storage_path}")
     print()
+
+
+def print_weekly_view(history):
+    """Print a weekly view of practice sessions"""
+    from datetime import datetime, timedelta
+    from collections import defaultdict
+    
+    # Get all sessions
+    sessions = history.get_all_sessions()
+    
+    if not sessions:
+        return
+    
+    # Group sessions by date
+    sessions_by_date = defaultdict(list)
+    for session in sessions:
+        date = session.get('date')
+        if date:
+            sessions_by_date[date].append(session)
+    
+    # Get last 7 days
+    today = datetime.now().date()
+    week_dates = [(today - timedelta(days=i)).strftime('%Y-%m-%d') for i in range(6, -1, -1)]
+    
+    print("┌─ TU SEMANA " + "─" * 55 + "┐")
+    
+    for i, date in enumerate(week_dates):
+        # Get day name using strftime for proper localization
+        date_obj = datetime.strptime(date, '%Y-%m-%d')
+        day_name = date_obj.strftime('%a')[:3]  # Get abbreviated day name
+        
+        # Map to Spanish day names
+        day_mapping = {
+            'Mon': 'Lun', 'Tue': 'Mar', 'Wed': 'Mié', 
+            'Thu': 'Jue', 'Fri': 'Vie', 'Sat': 'Sáb', 'Sun': 'Dom'
+        }
+        day_name = day_mapping.get(day_name, day_name)
+        
+        if date in sessions_by_date:
+            # Get average score for the day
+            day_sessions = sessions_by_date[date]
+            avg_score = sum(s['honor_score'] for s in day_sessions) / len(day_sessions)
+            tier = get_tier_for_score(avg_score)
+            
+            # Format with color indicator
+            score_str = f"{int(avg_score)}"
+            session_count = f"({len(day_sessions)} sesión{'es' if len(day_sessions) > 1 else ''})"
+            
+            print(f"│ {day_name}: {score_str.rjust(3)} ({tier}) {session_count.ljust(35)} │")
+        else:
+            print(f"│ {day_name}: {'---'.rjust(3)} (Sin práctica){' ' * 36} │")
+    
+    print("└" + "─" * 68 + "┘")
+    print()
+
+
+def get_tier_for_score(score):
+    """Get the tier name for a given score"""
+    import config
+    
+    for tier_name, (min_score, max_score) in config.SCORE_TIERS.items():
+        if min_score <= score <= max_score:
+            return tier_name
+    
+    # Fallback for scores outside defined ranges
+    return "N/A"
 
 
 def main():

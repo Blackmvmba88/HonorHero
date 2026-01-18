@@ -27,6 +27,8 @@ Read our full philosophy in the [MANIFESTO](MANIFESTO.md).
 ## Features
 
 - 🎤 **Real-time Audio Capture**: Captures live audio from microphone or instrument
+- 👤 **User Profiles**: 4 profiles for different skill levels and needs (beginner, intermediate, advanced, therapy)
+- ⏱️ **Session Modes**: Predefined durations (short 3min, focus 10min, free unlimited)
 - 🎼 **Multi-Dimensional Analysis**:
   - **Pitch**: Analyzes pitch accuracy with tolerant thresholds
   - **Timing**: Measures note timing accuracy
@@ -41,6 +43,7 @@ Read our full philosophy in the [MANIFESTO](MANIFESTO.md).
   - **Fragmentado** (0-39): Fragmented performance
 - 🗣️ **Human-Friendly Feedback**: Natural language coaching, not just numbers
 - 💾 **Session History**: Track your progress over days and weeks
+- 🔥 **Enhanced Statistics**: Streak tracking, weekly view, best score highlighting
 - 🎨 **Expressive UI**: Simple console interface focused on encouragement
 - 🔧 **Modular Architecture**: Clean separation of concerns for easy extension
 
@@ -69,30 +72,76 @@ pip install -r requirements.txt
 ### Run the UI Application
 
 ```bash
+# Basic usage with default settings (intermediate profile, unlimited time)
 python ui.py
+
+# Quick beginner practice (3 minutes)
+python ui.py --profile beginner --mode short
+
+# Daily intermediate practice (10 minutes)
+python ui.py --profile intermediate --mode focus
+
+# Advanced performance preparation
+python ui.py --profile advanced --mode focus
+
+# Therapeutic session (no time limit)
+python ui.py --profile therapy --mode free
+
+# Custom duration override
+python ui.py --profile intermediate --duration 60
 ```
 
 This launches the interactive console UI that displays real-time performance metrics and saves your session history automatically.
 
+### User Profiles
+
+Choose a profile that matches your skill level and needs:
+
+- **`beginner`**: Most tolerant settings for beginners and exploratory practice
+- **`intermediate`**: Balanced evaluation for regular practice (default)
+- **`advanced`**: Strict standards for experienced musicians
+- **`therapy`**: Maximum tolerance for therapeutic and adaptive use
+
+### Session Modes
+
+Select a practice duration that fits your schedule:
+
+- **`short`**: 3 minutes - Perfect for quick warmups and busy schedules
+- **`focus`**: 10 minutes - Ideal for daily concentrated practice
+- **`free`**: Unlimited - Continue until you stop (default)
+
 ### View Your Progress
 
-After completing sessions, view your statistics:
+After completing sessions, view your statistics with enhanced features:
 
 ```bash
 python view_stats.py
 ```
 
-This shows your practice history, average scores, improvement trends, and practice streaks.
+This shows:
+- 🔥 Practice streak with emoji (🔥 for 7+ days)
+- 🏆 Your best Honor Score
+- 📅 Weekly view of last 7 days
+- ⏱️ Total practice time with better formatting
+- 📊 Progress trends and improvements
 
 ### Command-line Options
 
 ```bash
-# Run for a specific duration (in seconds)
+# Show all available options
+python ui.py --help
+
+# Combine profile and mode
+python ui.py --profile beginner --mode short
+
+# Override duration (in seconds)
 python ui.py --duration 30
 
 # Run until interrupted (Ctrl+C)
 python ui.py
 ```
+
+For detailed information about profiles and modes, see [NEW_FEATURES.md](NEW_FEATURES.md).
 
 ### Programmatic Usage
 
