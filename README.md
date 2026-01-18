@@ -44,7 +44,13 @@ Read our full philosophy in the [MANIFESTO](MANIFESTO.md).
 - 🗣️ **Human-Friendly Feedback**: Natural language coaching, not just numbers
 - 💾 **Session History**: Track your progress over days and weeks
 - 🔥 **Enhanced Statistics**: Streak tracking, weekly view, best score highlighting
-- 🎨 **Expressive UI**: Simple console interface focused on encouragement
+- 🎨 **Expressive UI**: Two interface modes available
+  - **Standard UI**: Real-time metrics display with component scores
+  - **Piano Roll UI**: Temporal mirror showing your musical journey as it unfolds
+- 🎹 **Piano Roll Visualization**: Console-based piano-roll interface that shows:
+  - Your past performance (what you played 3 seconds ago)
+  - Your present performance (what you're playing now)
+  - Performance trends (where you're heading)
 - 🔧 **Modular Architecture**: Clean separation of concerns for easy extension
 
 ## Installation
@@ -71,6 +77,10 @@ pip install -r requirements.txt
 
 ### Run the UI Application
 
+HonorHero offers two interface modes:
+
+#### 1. Standard Console UI (Metrics Display)
+
 ```bash
 # Basic usage with default settings (intermediate profile, unlimited time)
 python ui.py
@@ -92,6 +102,29 @@ python ui.py --profile intermediate --duration 60
 ```
 
 This launches the interactive console UI that displays real-time performance metrics and saves your session history automatically.
+
+#### 2. Piano Roll UI (Temporal Mirror)
+
+```bash
+# Launch piano roll interface with default settings
+python piano_roll_ui.py
+
+# Quick practice with visual feedback
+python piano_roll_ui.py --profile beginner --mode short
+
+# Extended practice with 5-second time window
+python piano_roll_ui.py --profile intermediate --mode focus --window 5
+
+# Therapeutic session with piano roll visualization
+python piano_roll_ui.py --profile therapy --mode free
+```
+
+The **Piano Roll UI** is a temporal mirror of your performance - it shows:
+- **Your past** (what you played 3 seconds ago)
+- **Your present** (what you're playing now)
+- **Your trend** (where your performance is heading)
+
+This interface embraces the HonorHero philosophy: the music comes from you, and the UI reflects your journey without judgment. Unlike Guitar Hero, notes aren't thrown at you - instead, you see your own musical expression unfold in real-time.
 
 ### User Profiles
 
