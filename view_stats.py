@@ -147,14 +147,20 @@ def print_weekly_view(history):
     # Get last 7 days
     today = datetime.now().date()
     week_dates = [(today - timedelta(days=i)).strftime('%Y-%m-%d') for i in range(6, -1, -1)]
-    day_names = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
     
     print("┌─ TU SEMANA " + "─" * 55 + "┐")
     
     for i, date in enumerate(week_dates):
-        # Get day name
+        # Get day name using strftime for proper localization
         date_obj = datetime.strptime(date, '%Y-%m-%d')
-        day_name = day_names[date_obj.weekday()]
+        day_name = date_obj.strftime('%a')[:3]  # Get abbreviated day name
+        
+        # Map to Spanish day names
+        day_mapping = {
+            'Mon': 'Lun', 'Tue': 'Mar', 'Wed': 'Mié', 
+            'Thu': 'Jue', 'Fri': 'Vie', 'Sat': 'Sáb', 'Sun': 'Dom'
+        }
+        day_name = day_mapping.get(day_name, day_name)
         
         if date in sessions_by_date:
             # Get average score for the day
@@ -176,14 +182,14 @@ def print_weekly_view(history):
 
 def get_tier_for_score(score):
     """Get the tier name for a given score"""
-    if score >= 80:
-        return "Íntegro"
-    elif score >= 60:
-        return "Firme"
-    elif score >= 40:
-        return "Inestable"
-    else:
-        return "Fragmentado"
+    import config
+    
+    for tier_name, (min_score, max_score) in config.SCORE_TIERS.items():
+        if min_score <= score <= max_score:
+            return tier_name
+    
+    # Fallback for scores outside defined ranges
+    return "N/A"
 
 
 def main():
