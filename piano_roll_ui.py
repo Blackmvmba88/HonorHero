@@ -297,7 +297,8 @@ class PianoRollUI:
                         'score': pitch_score,
                         'velocity': velocity
                     })
-                except:
+                except (ValueError, IndexError):
+                    # Ignore invalid note conversions
                     pass
         
         # Display the frame

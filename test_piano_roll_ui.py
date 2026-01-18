@@ -10,7 +10,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from piano_roll_ui import PianoRollUI
-import librosa
+import librosa  # Used for note-to-MIDI conversion in tests
 
 
 def test_piano_roll_initialization():

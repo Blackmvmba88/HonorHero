@@ -5,6 +5,7 @@ Simulates notes being played to showcase the piano roll visualization
 
 import time
 import random
+import traceback
 from collections import deque
 from piano_roll_ui import PianoRollUI
 import librosa
@@ -133,5 +134,4 @@ if __name__ == '__main__':
         print("Thank you for trying the Piano Roll UI demo!")
     except Exception as e:
         print(f"\nError during demo: {e}")
-        import traceback
         traceback.print_exc()
