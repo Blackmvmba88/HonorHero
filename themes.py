@@ -4,6 +4,8 @@ Visual identity and aesthetic configuration for different profiles and modes
 Provides color palettes, icons, and visual feedback elements
 """
 
+import random
+
 # ANSI Color Codes
 class Colors:
     """ANSI color codes for terminal output"""
@@ -197,7 +199,6 @@ class VisualFeedback:
     @staticmethod
     def particle_effect(count=3):
         """Generate particle effect string"""
-        import random
         particles = random.sample(Icons.PARTICLES, min(count, len(Icons.PARTICLES)))
         return ' '.join(particles)
     

@@ -87,7 +87,9 @@ class HonorHeroUI:
         print(format_with_theme(f"{Icons.MUSIC}  HONORHERO  {Icons.MUSIC}".center(70), self.theme.accent + Colors.BOLD))
         print(format_with_theme("Interpretación consciente, no perfección vacía".center(70), self.theme.dim_text))
         print(format_with_theme("=" * 70, self.theme.primary))
-        print(f"Perfil: {format_with_theme(self.profile['name'], self.theme.secondary)} | Modo: {format_with_theme(self.mode['name'], self.theme.secondary)}".center(70 + 20))
+        # Use raw profile and mode names without color codes for centering
+        profile_mode_text = f"Perfil: {self.profile['name']} | Modo: {self.mode['name']}"
+        print(profile_mode_text.center(70))
         print()
         
         # Honor Score (large display) with theme colors
@@ -103,7 +105,7 @@ class HonorHeroUI:
         
         print(f"{color}╔{'═' * 68}╗{reset}")
         print(f"{color}║{'  HONOR SCORE':^68}║{reset}")
-        print(f"{color}║{f'{honor_score:.1f}{feedback_icon}':^78}║{reset}")
+        print(f"{color}║{f'{honor_score:.1f}{feedback_icon}':^68}║{reset}")
         print(f"{color}║{tier:^68}║{reset}")
         print(f"{color}╚{'═' * 68}╝{reset}")
         print()

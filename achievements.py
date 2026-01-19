@@ -291,8 +291,8 @@ class AchievementSystem:
         """
         newly_unlocked = []
         
-        # First session
-        if history_data.get('total_sessions', 0) == 1:
+        # First session - check if this achievement hasn't been unlocked yet
+        if history_data.get('total_sessions', 0) >= 1:
             if self.check_and_unlock('first_session'):
                 newly_unlocked.append(self.achievements['first_session'])
         

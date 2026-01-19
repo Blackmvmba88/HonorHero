@@ -222,7 +222,9 @@ class PianoRollUI:
                                self.theme.accent + Colors.BOLD))
         print(format_with_theme("Espejo temporal de tu interpretación".center(90), self.theme.dim_text))
         print(format_with_theme("═" * 90, self.theme.primary))
-        print(f"Perfil: {format_with_theme(self.profile['name'], self.theme.secondary)} | Modo: {format_with_theme(self.mode['name'], self.theme.secondary)}".center(100))
+        # Use raw profile and mode names without color codes for centering
+        profile_mode_text = f"Perfil: {self.profile['name']} | Modo: {self.mode['name']}"
+        print(profile_mode_text.center(90))
         print()
         
         # Piano roll visualization
