@@ -1,6 +1,7 @@
 """
 HonorHero Piano Roll Console UI
 A temporal mirror of musical performance - showing the journey, not judging it
+Enhanced with visual identity and gamification features
 """
 
 import time
@@ -10,11 +11,13 @@ from typing import Dict, List, Tuple
 import librosa
 from honorhero import HonorHero
 import config
+from themes import get_theme, get_score_color, Icons, VisualFeedback, format_with_theme, Colors
+from achievements import AchievementSystem
 
 
 class PianoRollUI:
     """
-    Console-based piano-roll visualization
+    Console-based piano-roll visualization with visual identity
     
     Shows a temporal window of the musician's performance:
     - Past: What happened 3 seconds ago
@@ -22,7 +25,7 @@ class PianoRollUI:
     - Trend: Where the performance is moving
     """
     
-    def __init__(self, profile: str = None, mode: str = None, window_seconds: int = 3):
+    def __init__(self, profile: str = None, mode: str = None, window_seconds: int = 3, theme: str = None):
         self.profile_name = profile or config.DEFAULT_PROFILE
         self.mode_name = mode or config.DEFAULT_MODE
         self.window_seconds = window_seconds
@@ -47,6 +50,12 @@ class PianoRollUI:
         config.RHYTHM_TOLERANCE = self.profile['RHYTHM_TOLERANCE']
         config.DYNAMICS_TOLERANCE = self.profile['DYNAMICS_TOLERANCE']
         config.CONSISTENCY_THRESHOLD = self.profile['CONSISTENCY_THRESHOLD']
+        
+        # Load theme (profile-specific or explicit)
+        self.theme = get_theme(theme_name=theme, profile=self.profile_name)
+        
+        # Initialize achievement system
+        self.achievements = AchievementSystem()
         
         self.engine = HonorHero()
         
@@ -88,15 +97,8 @@ class PianoRollUI:
             return -1
     
     def get_color_for_score(self, score: float) -> str:
-        """Get ANSI color code based on score"""
-        if score >= 80:
-            return '\033[92m'  # Green - Íntegro
-        elif score >= 60:
-            return '\033[94m'  # Blue - Firme
-        elif score >= 40:
-            return '\033[93m'  # Yellow - Inestable
-        else:
-            return '\033[91m'  # Red - Fragmentado
+        """Get ANSI color code based on score using theme"""
+        return get_score_color(score, self.theme)
     
     def get_velocity_char(self, velocity: float) -> str:
         """Get character representing velocity/dynamics"""
@@ -162,9 +164,9 @@ class PianoRollUI:
         return lines
     
     def draw_trend_indicator(self) -> str:
-        """Draw trend indicator showing performance direction"""
+        """Draw trend indicator showing performance direction with theme"""
         if len(self.recent_scores) < 3:
-            return "Trend: ━━ Gathering data..."
+            return format_with_theme("Tendencia: ━━ Recopilando datos...", self.theme.dim_text)
         
         # Calculate trend (simple linear regression)
         scores = list(self.recent_scores)
@@ -182,27 +184,27 @@ class PianoRollUI:
         else:
             slope = numerator / denominator
         
-        # Visualize trend
+        # Visualize trend with theme colors
         if slope > 1:
-            trend = "↗↗ Mejorando rápidamente"
-            color = '\033[92m'
+            trend = f"{Icons.ARROW_UP}{Icons.ARROW_UP} Mejorando rápidamente"
+            color = self.theme.success
         elif slope > 0.3:
-            trend = "↗ Mejorando"
-            color = '\033[94m'
+            trend = f"{Icons.ARROW_UP} Mejorando"
+            color = self.theme.info
         elif slope > -0.3:
-            trend = "→ Estable"
-            color = '\033[93m'
+            trend = f"{Icons.ARROW_RIGHT} Estable"
+            color = self.theme.warning
         elif slope > -1:
-            trend = "↘ Bajando"
-            color = '\033[93m'
+            trend = f"{Icons.ARROW_DOWN} Bajando"
+            color = self.theme.warning
         else:
-            trend = "↘↘ Bajando rápidamente"
-            color = '\033[91m'
+            trend = f"{Icons.ARROW_DOWN}{Icons.ARROW_DOWN} Bajando rápidamente"
+            color = self.theme.error
         
-        return f"{color}Tendencia: {trend}\033[0m"
+        return format_with_theme(f"Tendencia: {trend}", color)
     
     def display_frame(self, metrics: Dict):
-        """Display a frame of the piano roll UI"""
+        """Display a frame of the piano roll UI with themed visuals"""
         current_time = time.time()
         
         # Throttle updates
@@ -214,25 +216,26 @@ class PianoRollUI:
         # Clear screen
         self.clear_screen()
         
-        # Header
-        print("═" * 90)
-        print("🎹  HONORHERO PIANO ROLL  🎹".center(90))
-        print("Espejo temporal de tu interpretación".center(90))
-        print("═" * 90)
-        print(f"Perfil: {self.profile['name']} | Modo: {self.mode['name']}".center(90))
+        # Header with theme
+        print(format_with_theme("═" * 90, self.theme.primary))
+        print(format_with_theme(f"{Icons.MUSIC}  HONORHERO PIANO ROLL  {Icons.MUSIC}".center(90), 
+                               self.theme.accent + Colors.BOLD))
+        print(format_with_theme("Espejo temporal de tu interpretación".center(90), self.theme.dim_text))
+        print(format_with_theme("═" * 90, self.theme.primary))
+        print(f"Perfil: {format_with_theme(self.profile['name'], self.theme.secondary)} | Modo: {format_with_theme(self.mode['name'], self.theme.secondary)}".center(100))
         print()
         
         # Piano roll visualization
-        print("┌" + "─" * 4 + "┬" + "─" * 80 + "┐")
-        print(f"│{'NOTA':^4}│{'← PASADO':^30}{'PRESENTE →':^50}│")
-        print("├" + "─" * 4 + "┼" + "─" * 80 + "┤")
+        print(format_with_theme("┌" + "─" * 4 + "┬" + "─" * 80 + "┐", self.theme.primary))
+        print(f"│{'NOTA':^4}│{format_with_theme('← PASADO', self.theme.dim_text):^40}{format_with_theme('PRESENTE →', self.theme.accent):^50}│")
+        print(format_with_theme("├" + "─" * 4 + "┼" + "─" * 80 + "┤", self.theme.primary))
         
         # Draw the piano roll
         roll_lines = self.draw_piano_roll(current_time)
         for line in roll_lines:
             print(line)
         
-        print("└" + "─" * 4 + "┴" + "─" * 80 + "┘")
+        print(format_with_theme("└" + "─" * 4 + "┴" + "─" * 80 + "┘", self.theme.primary))
         print()
         
         # Current metrics
@@ -240,26 +243,27 @@ class PianoRollUI:
         tier = metrics.get('tier', 'N/A')
         components = metrics.get('components', {})
         
-        # Score display
+        # Score display with theme
         color = self.get_color_for_score(honor_score)
-        print(f"{color}╔{'═' * 88}╗\033[0m")
-        print(f"{color}║{f'HONOR SCORE: {honor_score:.1f} - {tier}':^88}║\033[0m")
-        print(f"{color}╚{'═' * 88}╝\033[0m")
+        print(f"{color}╔{'═' * 88}╗{Colors.RESET}")
+        print(f"{color}║{f'HONOR SCORE: {honor_score:.1f} - {tier}':^88}║{Colors.RESET}")
+        print(f"{color}╚{'═' * 88}╝{Colors.RESET}")
         print()
         
         # Trend indicator
         print(self.draw_trend_indicator())
         print()
         
-        # Mini component display
+        # Mini component display with icons
         comp_str = "  ".join([f"{name.upper()}: {score:.0f}" for name, score in components.items()])
-        print(f"📊 {comp_str}")
+        print(format_with_theme(f"{Icons.CHART} {comp_str}", self.theme.info))
         print()
         
         # Legend
-        print("Leyenda: █ fuerte  ▓ medio  ▒ suave  ░ muy suave")
+        print(format_with_theme(f"Leyenda: {Icons.BAR_FULL} fuerte  ▓ medio  ▒ suave  {Icons.BAR_EMPTY} muy suave", 
+                               self.theme.dim_text))
         print()
-        print("Presiona Ctrl+C para detener...")
+        print(format_with_theme("Presiona Ctrl+C para detener...", self.theme.dim_text))
         
         # Store score for trend calculation
         self.recent_scores.append(honor_score)
@@ -305,12 +309,13 @@ class PianoRollUI:
         self.display_frame(metrics)
     
     def display_final_results(self, results: Dict):
-        """Display final performance summary"""
+        """Display final performance summary with achievements"""
         self.clear_screen()
         
-        print("=" * 90)
-        print("🏆  RESUMEN FINAL  🏆".center(90))
-        print("=" * 90)
+        print(format_with_theme("=" * 90, self.theme.primary))
+        print(format_with_theme(f"{Icons.TROPHY}  RESUMEN FINAL  {Icons.TROPHY}".center(90), 
+                               self.theme.accent + Colors.BOLD))
+        print(format_with_theme("=" * 90, self.theme.primary))
         print()
         
         honor_score = results.get('final_honor_score', 0)
@@ -322,41 +327,67 @@ class PianoRollUI:
         
         color = self.get_color_for_score(honor_score)
         
-        # Final score
-        print(f"{color}╔{'═' * 88}╗\033[0m")
-        print(f"{color}║{'HONOR SCORE FINAL':^88}║\033[0m")
-        print(f"{color}║{f'{honor_score:.1f}':^88}║\033[0m")
-        print(f"{color}║{tier:^88}║\033[0m")
-        print(f"{color}╚{'═' * 88}╝\033[0m")
+        # Final score with theme
+        print(f"{color}╔{'═' * 88}╗{Colors.RESET}")
+        print(f"{color}║{'HONOR SCORE FINAL':^88}║{Colors.RESET}")
+        print(f"{color}║{f'{honor_score:.1f}':^88}║{Colors.RESET}")
+        print(f"{color}║{tier:^88}║{Colors.RESET}")
+        print(f"{color}╚{'═' * 88}╝{Colors.RESET}")
         print()
         
         # Human-friendly summary
         if human_summary:
-            print(f"💬 {human_summary}")
+            print(format_with_theme(f"{Icons.SPARKLES} {human_summary}", self.theme.info))
         else:
-            print(f"💬 {message}")
+            print(format_with_theme(f"{Icons.SPARKLES} {message}", self.theme.info))
         print()
         
-        # Component breakdown
-        print("┌─ COMPONENTES " + "─" * 73 + "┐")
+        # Check for achievements
+        history_stats = self.engine.get_session_statistics()
+        newly_unlocked = self.achievements.check_session_achievements(results, history_stats)
+        
+        if newly_unlocked:
+            print()
+            print(format_with_theme(f"{'═' * 90}", self.theme.accent))
+            print(format_with_theme(f"{Icons.STAR}  ¡NUEVOS LOGROS DESBLOQUEADOS!  {Icons.STAR}".center(90), 
+                                   self.theme.accent + Colors.BOLD))
+            print(format_with_theme(f"{'═' * 90}", self.theme.accent))
+            for achievement in newly_unlocked:
+                print(format_with_theme(
+                    f"{achievement.icon}  {achievement.name}: {achievement.description}",
+                    self.theme.success
+                ))
+            print()
+        
+        # Component breakdown with smooth bars
+        print(format_with_theme("┌─ COMPONENTES " + "─" * 73 + "┐", self.theme.primary))
         for name, score in components.items():
             label = name.upper().ljust(15)
-            bar_width = 50
-            filled = int((score / 100) * bar_width)
-            bar = '█' * filled + '░' * (bar_width - filled)
+            bar = VisualFeedback.smooth_bar(score, width=50)
             comp_color = self.get_color_for_score(score)
-            print(f"│ {label} │ {comp_color}{bar}\033[0m {score:>5.1f}% │")
-        print("└" + "─" * 88 + "┘")
+            print(f"│ {label} │ {comp_color}{bar}{Colors.RESET} {score:>5.1f}% │")
+        print(format_with_theme("└" + "─" * 88 + "┘", self.theme.primary))
         print()
         
         # Session info
         minutes = int(duration // 60)
         seconds = int(duration % 60)
-        print(f"⏱️  Duración: {minutes:02d}:{seconds:02d}")
-        print(f"🎵 Notas tocadas: {len(self.note_buffer)}")
+        print(format_with_theme(f"{Icons.ROCKET} Duración: {minutes:02d}:{seconds:02d}", self.theme.secondary))
+        print(format_with_theme(f"{Icons.MUSIC} Notas tocadas: {len(self.note_buffer)}", self.theme.secondary))
         print()
         
-        print("✨ La música es el viaje, no el destino. ¡Sigue explorando! ✨")
+        # Show achievement progress
+        achievement_progress = self.achievements.get_progress()
+        unlocked_count = achievement_progress['unlocked']
+        total_count = achievement_progress['total']
+        print(format_with_theme(
+            f"{Icons.MEDAL} Logros: {unlocked_count}/{total_count} ({achievement_progress['percentage']:.0f}%)",
+            self.theme.accent
+        ))
+        print()
+        
+        print(format_with_theme(f"{Icons.SPARKLES} La música es el viaje, no el destino. ¡Sigue explorando! {Icons.SPARKLES}", 
+                               self.theme.success))
         print()
     
     def run(self, duration: int = None):
@@ -424,48 +455,65 @@ def main():
         default=3,
         help='Time window in seconds to display (default: 3)'
     )
+    parser.add_argument(
+        '--theme',
+        type=str,
+        choices=['warm', 'cool', 'colorblind', 'monochrome', 'dark', 'light'],
+        default=None,
+        help='Visual theme: warm (cálido) | cool (frío) | colorblind (accesible) | monochrome | dark | light'
+    )
     
     args = parser.parse_args()
     
+    # Get theme for welcome screen
+    profile = args.profile or config.DEFAULT_PROFILE
+    theme = get_theme(theme_name=args.theme, profile=profile)
+    
     print()
-    print("=" * 90)
-    print("🎹  Bienvenido a HONORHERO PIANO ROLL  🎹".center(90))
-    print("=" * 90)
+    print(format_with_theme("=" * 90, theme.primary))
+    print(format_with_theme(f"{Icons.MUSIC}  Bienvenido a HONORHERO PIANO ROLL  {Icons.MUSIC}".center(90), 
+                           theme.accent + Colors.BOLD))
+    print(format_with_theme("=" * 90, theme.primary))
     print()
     print("Un espejo temporal de tu interpretación musical.")
     print("Ver tu música fluir en tiempo real - sin juicios, solo reflexión.")
     print()
     print("El piano roll muestra:")
-    print("  • Tu pasado reciente (últimos 3 segundos)")
-    print("  • Tu presente (lo que estás tocando ahora)")
-    print("  • Tu tendencia (hacia dónde te mueves)")
+    print(f"  {format_with_theme('●', theme.dim_text)} Tu pasado reciente (últimos {args.window} segundos)")
+    print(f"  {format_with_theme('●', theme.accent)} Tu presente (lo que estás tocando ahora)")
+    print(f"  {format_with_theme('●', theme.info)} Tu tendencia (hacia dónde te mueves)")
     print()
-    print("Cada nota es un paso en tu viaje musical. 🎶")
+    print(format_with_theme(f"Cada nota es un paso en tu viaje musical. {Icons.MUSIC}", theme.success))
     print()
     
     # Show profile and mode selection
-    profile = args.profile or config.DEFAULT_PROFILE
     mode = args.mode or config.DEFAULT_MODE
     
     profile_info = config.PROFILES[profile]
     mode_info = config.SESSION_MODES[mode]
     
-    print(f"📋 Perfil: {profile_info['name']}")
+    print(format_with_theme(f"{Icons.CHART} Perfil: {profile_info['name']}", theme.primary))
     print(f"   {profile_info['description']}")
     print()
-    print(f"⏱️  Modo: {mode_info['name']}")
+    print(format_with_theme(f"{Icons.ROCKET} Modo: {mode_info['name']}", theme.primary))
     print(f"   {mode_info['description']}")
     if mode_info['duration']:
         minutes = mode_info['duration'] // 60
         print(f"   Duración: {minutes} minutos")
     print()
-    print("-" * 90)
+    
+    # Show theme info if explicitly selected
+    if args.theme:
+        print(format_with_theme(f"{Icons.SPARKLES} Tema visual: {theme.name}", theme.accent))
+        print()
+    
+    print(format_with_theme("-" * 90, theme.dim_text))
     print()
     
     input("Presiona Enter para comenzar...")
     print()
     
-    ui = PianoRollUI(profile=profile, mode=mode, window_seconds=args.window)
+    ui = PianoRollUI(profile=profile, mode=mode, window_seconds=args.window, theme=args.theme)
     ui.run(duration=args.duration)
 
 
