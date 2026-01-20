@@ -44,8 +44,20 @@ Read our full philosophy in the [MANIFESTO](MANIFESTO.md).
 - 🗣️ **Human-Friendly Feedback**: Natural language coaching, not just numbers
 - 💾 **Session History**: Track your progress over days and weeks
 - 🔥 **Enhanced Statistics**: Streak tracking, weekly view, best score highlighting
+- 🎨 **Visual Identity System**: 6 themes with profile-specific aesthetics
+  - **Warm Theme**: Encouraging colors for beginners and therapy
+  - **Cool Theme**: Precise colors for intermediate/advanced practice
+  - **Colorblind Accessible**: High-contrast, accessible color palette
+  - **Dark/Light Modes**: Optimized for different lighting conditions
+  - **Monochrome**: Minimal distraction, pure focus
+  - **Animated Feedback**: Particles, arrows, and smooth progress bars
+- 🎮 **Non-Competitive Gamification**: Achievement system focused on personal growth
+  - **Philosophical Achievements**: Persistence, Constancy, Listening, Expression
+  - **Soft Medals**: Gentle recognition of technical progress
+  - **Temporal Milestones**: Time-based celebration of dedication
+  - **17+ Achievements**: No rankings, no competition, just personal celebration
 - 🎨 **Expressive UI**: Two interface modes available
-  - **Standard UI**: Real-time metrics display with component scores
+  - **Standard UI**: Real-time metrics display with component scores and themed visuals
   - **Piano Roll UI**: Temporal mirror showing your musical journey as it unfolds
 - 🎹 **Piano Roll Visualization**: Console-based piano-roll interface that shows:
   - Your past performance (what you played 3 seconds ago)
@@ -99,9 +111,17 @@ python ui.py --profile therapy --mode free
 
 # Custom duration override
 python ui.py --profile intermediate --duration 60
+
+# Use specific visual theme
+python ui.py --theme warm           # Encouraging, warm colors
+python ui.py --theme cool           # Precise, cool colors
+python ui.py --theme colorblind     # Accessible for color vision deficiency
+python ui.py --theme dark           # Dark mode for low light
+python ui.py --theme light          # Light mode for bright environments
+python ui.py --theme monochrome     # Pure grayscale
 ```
 
-This launches the interactive console UI that displays real-time performance metrics and saves your session history automatically.
+This launches the interactive console UI that displays real-time performance metrics with beautiful themed visuals, animated feedback, and saves your session history automatically. Achievements are unlocked as you progress!
 
 #### 2. Piano Roll UI (Temporal Mirror)
 
@@ -117,14 +137,36 @@ python piano_roll_ui.py --profile intermediate --mode focus --window 5
 
 # Therapeutic session with piano roll visualization
 python piano_roll_ui.py --profile therapy --mode free
+
+# Piano roll with specific theme
+python piano_roll_ui.py --theme dark --mode focus
 ```
 
-The **Piano Roll UI** is a temporal mirror of your performance - it shows:
+The **Piano Roll UI** is a temporal mirror of your performance with themed colors - it shows:
 - **Your past** (what you played 3 seconds ago)
 - **Your present** (what you're playing now)
 - **Your trend** (where your performance is heading)
 
-This interface embraces the HonorHero philosophy: the music comes from you, and the UI reflects your journey without judgment. Unlike Guitar Hero, notes aren't thrown at you - instead, you see your own musical expression unfold in real-time.
+This interface embraces the HonorHero philosophy: the music comes from you, and the UI reflects your journey without judgment. Unlike Guitar Hero, notes aren't thrown at you - instead, you see your own musical expression unfold in real-time with beautiful visual feedback.
+
+### Visual Themes & Achievements
+
+HonorHero now features a comprehensive visual identity system with 6 themes and a non-competitive achievement system. See [VISUAL_IDENTITY.md](VISUAL_IDENTITY.md) for complete details.
+
+**Quick Theme Guide:**
+- `warm` - Encouraging, therapeutic (auto-selected for beginner/therapy)
+- `cool` - Precise, focused (auto-selected for intermediate/advanced)
+- `colorblind` - Accessible for color vision deficiency
+- `dark` / `light` - Optimized for different lighting
+- `monochrome` - Minimal visual distraction
+
+**Achievements:**
+Unlock 17+ achievements as you practice, including:
+- 🌱 Philosophical achievements (Persistence, Constancy, Listening)
+- ✨ Soft medals (Stable Pitch, Balanced Performer)
+- 🚀 Temporal milestones (First Step, Week Streak, 10 Hours)
+
+No rankings, no competition - just personal celebration of your musical journey!
 
 ### User Profiles
 

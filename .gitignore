@@ -32,3 +32,7 @@ recordings/
 
 # Test outputs
 test_output/
+
+# User data (achievements, session history)
+achievements.json
+session_history.json
